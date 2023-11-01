@@ -1,0 +1,66 @@
+{
+  "name": "avr-utils",
+  "displayName": "AVR Utils",
+  "description": "This extension will help you to compile code for avr based microcontrollers straight from the comfort of your favourite code editor!",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:c",
+    "onLanguage:asm"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "avr-utils.openMicrochipStudioProject",
+        "title": "AVR Utils: Open Microchip Project"
+      },
+      {
+        "command": "avr-utils.makeProject",
+        "title": "AVR Utils: Make Project"
+      },
+      {
+        "title": "AVR Utils: Build/Compile",
+        "command": "avr-utils.compileProject",
+        "enablement": "extension.activated"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.60.0",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "tar": "^6.2.0"
+  },
+  "author": "Daniel Strong Agani <aganidanielstrong@gmail.com> (https://github.com/DanielHuey)",
+  "license": "GPL-3.0",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "avr",
+    "atmel"
+  ],
+  "publisher": "danielHuey",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,5 @@
+/.vscode
+/avr-utils-0.0.1.vsix
+/node_modules
+/test
+/vsc-extension-quickstart.md
