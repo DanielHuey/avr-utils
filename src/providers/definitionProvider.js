@@ -82,7 +82,7 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
         let listOfLocations = []
 
         const hashDefineRe = new RegExp(`^#\\s?define\\s+\\b${wordBeingChecked}\\b`)
-        const functionRe = new RegExp(`\\b(void|int|char|short|long|float|double|signed|unsigned|const|static|extern|auto|register|volatile|inline)\\b\\s*?${wordBeingChecked}\\s*?\\((.*)\\)(.*?)`)
+        const funcVarRe = new RegExp(`\\b(void|int|char|short|long|float|double|signed|unsigned|const|static|extern|auto|register|volatile|inline)\\b\\s*?${wordBeingChecked}\\s*?`)
 
         /**@param {string[]} headerList  */
         function definitionsFromHeaders(headerList) {
@@ -98,8 +98,8 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
                                 new vscode.Position(line, match.index)
                             )
                         )
-                    } else if (functionRe.test(documentLines[line])) {
-                        const match2 = documentLines[line].match(functionRe)
+                    } else if (funcVarRe.test(documentLines[line])) {
+                        const match2 = documentLines[line].match(funcVarRe)
                         listOfLocations.push(
                             new vscode.Location(
                                 vscode.Uri.file(header),
