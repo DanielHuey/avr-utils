@@ -2,7 +2,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { devices, initWorkspace, thisWorkspace, dataObject } = require("./utils");
+const { devices, initWorkspace, thisWorkspace, dataObject, previousDefinitions } = require("./utils");
 const { createLinkProvider } = require("./providers/documentLinkProvider");
 const { registerCompletions } = require("./providers/completionsProvider");
 
@@ -99,6 +99,7 @@ async function selectDevice() {
         title: "List of Available AVR Devices",
     });
     if (_devOpt !== undefined) {
+        previousDefinitions.clear()
         _selectedDevice = _devOpt;
         selectDeviceButton.text = _selectedDevice;
         if (_devOpt.endsWith("-asm")) {

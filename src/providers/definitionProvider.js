@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const vscode = require('vscode');
-const { includeDir, thisWorkspace } = require('../utils');
+const { includeDir, thisWorkspace, previousDefinitions } = require('../utils');
 const { EOL } = require('os');
 const { selectedDevice } = require('../init');
 const keywords = [
@@ -41,6 +41,10 @@ const keywords = [
 
 const provider = vscode.languages.registerDefinitionProvider('c', {
     provideDefinition: (doc, pos) => {
+        const wordBeingChecked = doc.getText(doc.getWordRangeAtPosition(pos))
+        if (Array.from(previousDefinitions.keys()).includes(wordBeingChecked)) {
+            return previousDefinitions.get(wordBeingChecked)
+        }
         const listOfGlobalHeaders = []
         const listOfWorkspaceHeaders = []
         const dmatch = selectedDevice().match(/^([a-zA-Z]+)((\d*)(.*?(\d?)))$/)
@@ -75,9 +79,8 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
         }
 
         /**@type {vscode.Location[]} This is the list of locations that will be returned to the user*/
-        let listOfLocLink = []
+        let listOfLocations = []
 
-        const wordBeingChecked = doc.getText(doc.getWordRangeAtPosition(pos))
         const hashDefineRe = new RegExp(`^#\\s?define\\s+\\b${wordBeingChecked}\\b`)
         const functionRe = new RegExp(`\\b(void|int|char|short|long|float|double|signed|unsigned|const|static|extern|auto|register|volatile|inline)\\b\\s*?${wordBeingChecked}\\s*?\\((.*)\\)(.*?)`)
 
@@ -89,7 +92,7 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
                 for (let line = 0; line < documentLines.length; line++) {
                     if (hashDefineRe.test(documentLines[line])) {
                         const match = documentLines[line].match(hashDefineRe)
-                        listOfLocLink.push(
+                        listOfLocations.push(
                             new vscode.Location(
                                 vscode.Uri.file(header),
                                 new vscode.Position(line, match.index)
@@ -97,7 +100,7 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
                         )
                     } else if (functionRe.test(documentLines[line])) {
                         const match2 = documentLines[line].match(functionRe)
-                        listOfLocLink.push(
+                        listOfLocations.push(
                             new vscode.Location(
                                 vscode.Uri.file(header),
                                 new vscode.Position(line, match2.index + match2[1].length + 1)
@@ -111,9 +114,10 @@ const provider = vscode.languages.registerDefinitionProvider('c', {
             if (!keywords.includes(wordBeingChecked)) {
                 definitionsFromHeaders(listOfGlobalHeaders)
                 definitionsFromHeaders(listOfWorkspaceHeaders)
+                previousDefinitions.set(wordBeingChecked, listOfLocations)
             }
         }
-        return listOfLocLink
+        return listOfLocations
     }
 })
 module.exports = {

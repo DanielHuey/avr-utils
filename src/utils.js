@@ -15,6 +15,8 @@ module.exports = {
     includeDir,
     anInnerDir,
     toolchainDir,
+    /** @type {Map<string, vscode.Location[]>} */
+    previousDefinitions: new Map(),
 };
 
 let _thisWorkspace = null;
