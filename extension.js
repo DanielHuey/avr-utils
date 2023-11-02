@@ -5,7 +5,8 @@ const vscode = require('vscode');
 const { init } = require('./src/init');
 const { defaultCompletions } = require('./src/providers/completionsProvider')
 const { includeDirProvider } = require('./src/providers/documentLinkProvider')
-const registerCommands = require('./src/registerCommands')
+const { definitions } = require('./src/providers/definitionProvider');
+const registerCommands = require('./src/registerCommands');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -15,15 +16,16 @@ const registerCommands = require('./src/registerCommands')
  */
 function activate(context) {
 	registerCommands(); // initialize the commands
-	init(context);
-
-	console.log('Congratulations, your extension "avr-utils" is now active!');
-
-
 	context.subscriptions.push(
 		defaultCompletions,
-		includeDirProvider
+		includeDirProvider,
+		definitions
 	)
+	init(context);
+
+	console.log('"avr-utils" is now active!');
+
+
 
 }
 

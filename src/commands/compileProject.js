@@ -11,7 +11,7 @@ const {
     anInnerDir,
     toolchainDir,
     dataObject,
-} = require("../constants");
+} = require("../utils");
 const { resetIncludeDir } = require("../providers/documentLinkProvider");
 const { selectedDevice, spinCompileButton } = require("../init");
 

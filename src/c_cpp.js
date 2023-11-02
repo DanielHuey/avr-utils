@@ -1,41 +1,28 @@
 const path = require("path");
 const fs = require("fs");
-const { platform } = require("os");
-const { includeDir, thisWorkspace, toolchainDir } = require("./constants");
+const { thisWorkspace } = require("./utils");
 
-const OS = () => {
-    if (platform() === "win32") {
-        return "Win32";
-    } else if (platform() === "darwin") {
-        return "Mac";
-    } else {
-        return "Linux";
-    }
-};
-const c_cppConfig = {
-    configurations: [
-        {
-            name: `${OS()}`,
-            includePath: ["${workspaceFolder}/**", `${includeDir()}/**`],
-            defines: [],
-            compilerPath: `${path.join(toolchainDir(), "bin", "avr-gcc")}`,
-            cStandard: "c17",
-            cppStandard: "c++14",
-            intelliSenseMode: "${default}",
-        },
-    ],
-    version: 4,
+const extJson = {
+    unwantedRecommendations: [
+        "ms-vscode.cpptools",
+    ]
 };
 
 /**
- * This function creates a `c_cpp_properties.json` file inside the `.vscode` folder.
+ * This function creates a `extensions.json` file inside the `.vscode` folder.
  */
-function createC_cppConfig() {
+function extensionsJson() {
     const pathtovscode = path.join(thisWorkspace().uri.fsPath, ".vscode");
-    if (!fs.existsSync(pathtovscode)) {
-        fs.mkdirSync(pathtovscode);
+    // if (!fs.existsSync(pathtovscode)) {
+    //     fs.mkdirSync(pathtovscode);
+    // }
+    if (fs.existsSync(path.join(pathtovscode, "extensions.json"))) {
+        const extObj = JSON.parse(fs.readFileSync(path.join(pathtovscode, "extensions.json"), "utf8"));
+        if (!extObj.unwantedRecommendations.includes("ms-vscode.cpptools")) extObj.unwantedRecommendations.push("ms-vscode.cpptools");
+        fs.writeFileSync(path.join(pathtovscode, "extensions.json"), JSON.stringify(extObj, null, 4));
+        return
     }
-    fs.writeFileSync(path.join(pathtovscode, "c_cpp_properties.json"), JSON.stringify(c_cppConfig, null, 4));
+    else fs.writeFileSync(path.join(pathtovscode, "extensions.json"), JSON.stringify(extJson, null, 4));
 }
 
-module.exports = createC_cppConfig;
+module.exports = extensionsJson;

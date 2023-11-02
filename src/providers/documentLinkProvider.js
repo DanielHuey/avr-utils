@@ -1,6 +1,6 @@
 const vscode = require('vscode')
 const path = require('path')
-const { includeDir } = require('../constants')
+const { includeDir } = require('../utils')
 
 /**
  * 
@@ -10,7 +10,7 @@ const { includeDir } = require('../constants')
  * @returns 
  */
 function newLinkProvider(regex, directory) {
-    return vscode.languages.registerDocumentLinkProvider('c', {
+    return vscode.languages.registerDocumentLinkProvider('c' || 'cpp', {
         provideDocumentLinks: (document) => {
             const links = []
             for (let line = 0; line < document.lineCount; line++) {

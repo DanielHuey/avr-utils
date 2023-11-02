@@ -2,8 +2,9 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { devices, initWorkspace, thisWorkspace, dataObject } = require("./constants");
+const { devices, initWorkspace, thisWorkspace, dataObject } = require("./utils");
 const { createLinkProvider } = require("./providers/documentLinkProvider");
+const { registerCompletions } = require("./providers/completionsProvider");
 
 let _selectedDevice = null;
 let _compileButtonVisible = false;
@@ -23,6 +24,8 @@ async function init(context) {
         if (event.removed.length > 0) {
             workspaceNotYetAccessible = true;
             context.subscriptions.pop();
+            context.subscriptions.pop();
+            if (vscode.workspace.workspaceFolders) getWorkspaceRelatedStuff(context);
         }
         if (event.added.length > 0) {
             getWorkspaceRelatedStuff(context);
@@ -95,17 +98,17 @@ async function selectDevice() {
         canPickMany: false,
         title: "List of Available AVR Devices",
     });
-    if (_devOpt !== null) {
+    if (_devOpt !== undefined) {
         _selectedDevice = _devOpt;
         selectDeviceButton.text = _selectedDevice;
         if (_devOpt.endsWith("-asm")) {
             _selectedDevice = _devOpt.substring(0, _devOpt.length - 4);
-            selectDeviceButton.text = _selectedDevice + " (Assembly Only)";
+            selectDeviceButton.text = `${_selectedDevice} (Assembly Only)`;
         }
         selectDeviceButton.tooltip = `Compiling for ${_selectedDevice}`;
         if (!_compileButtonVisible) showCompileButton();
-        //write to project.json
-        fs.writeFileSync(path.join(thisWorkspace().uri.fsPath, "project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
+        //write to avr_project.json
+        fs.writeFileSync(path.join(thisWorkspace().uri.fsPath, '.vscode', "avr_project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
     }
 }
 function showCompileButton() {
@@ -121,6 +124,7 @@ async function spinCompileButton() {
     compileButton.text = "$(debug-start) Build";
 }
 
+/**@returns {string} */
 function getSelectedDevice() {
     return _selectedDevice;
 }
@@ -132,17 +136,23 @@ let workspaceNotYetAccessible = true;
 async function getWorkspaceRelatedStuff(context) {
     if (workspaceNotYetAccessible) {
         if (vscode.workspace.workspaceFolders) {
-            initWorkspace();
-            const c_cpp = require("./c_cpp");
-            c_cpp();
+            initWorkspace(); // enables the "workspace" utils
+            /* Find a way to verify if its an avr project */
+
+            const pathtovscode = path.join(thisWorkspace().uri.fsPath, ".vscode");
+            if (!fs.existsSync(pathtovscode)) {
+                fs.mkdirSync(pathtovscode);
+            }
+            require("./c_cpp")();
             context.subscriptions.push(createLinkProvider(/#include "(.*)"/, thisWorkspace().uri.fsPath));
-            if (fs.existsSync(path.join(thisWorkspace().uri.fsPath, "project.json"))) {
-                let thejson = JSON.parse(fs.readFileSync(path.join(thisWorkspace().uri.fsPath, "project.json"), "utf8"));
+            context.subscriptions.push(registerCompletions({ directory: thisWorkspace().uri.fsPath, triggers: ['"'], regex: /#include\s+"([^"]*)$/ }));
+            if (fs.existsSync(path.join(pathtovscode, "avr_project.json"))) {
+                let thejson = JSON.parse(fs.readFileSync(path.join(pathtovscode, "avr_project.json"), "utf8"));
                 if (thejson.avrDevice) {
                     _selectedDevice = thejson.avrDevice;
                 }
             } else {
-                fs.writeFileSync(path.join(thisWorkspace().uri.fsPath, "project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
+                fs.writeFileSync(path.join(pathtovscode, "avr_project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
             }
             workspaceNotYetAccessible = false;
         }

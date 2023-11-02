@@ -1,7 +1,7 @@
 let vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
-const { includeDir } = require("../constants");
+const { includeDir } = require("../utils");
 
 function _getCompletions(directory, type) {
     let completions = [];
@@ -29,23 +29,23 @@ function _getCompletions(directory, type) {
 
 /**
  *
- * @param {string} directory - Directory to search for header files in.
- * @param  {string[]} triggers - List of triggers for enabling the completions e.g `['<','.']`.
- * @param {string} type - type of file to get completions for. Default is `'.h'`
+ * @para {string} directory - Directory to search for header files in.
+ * @para  {string[]} triggers - List of triggers for enabling the completions e.g `['<','.']`.
+ * @para {string} type - type of file to get completions for. Default is `'.h'`
  * @returns {vscode.Disposable}
  */
-function _registerCompletions(directory, triggers = [], type = ".h") {
+function _registerCompletions({ directory, triggers = [], regex = /#include\s+<([^>]*)$/ }) {
     return vscode.languages.registerCompletionItemProvider(
         "c",
         {
             provideCompletionItems: (document, position) => {
                 // Get the text of the document up to the completion position.
                 const text = document.lineAt(position).text.substring(0, position.character);
-                const match = text.match(/#include\s+<([^>]*)$/);
+                const match = text.match(regex);
                 if (match) {
                     return {
                         isIncomplete: false,
-                        items: _getCompletions(directory, type),
+                        items: _getCompletions(directory, ".h"),
                     };
                 }
                 return undefined;
@@ -56,6 +56,6 @@ function _registerCompletions(directory, triggers = [], type = ".h") {
 }
 
 module.exports = {
-    defaultCompletions: _registerCompletions(includeDir(), ["<"]),
+    defaultCompletions: _registerCompletions({ directory: includeDir(), triggers: ["<"] }),
     registerCompletions: _registerCompletions,
 };
