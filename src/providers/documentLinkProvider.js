@@ -18,9 +18,10 @@ function newLinkProvider(regex, directory) {
                 const match = lineText.match(regex)
                 if (match) {
                     links.push(new vscode.DocumentLink(
-                        new vscode.Range(line, match.index + 10, line, match.index + 10 + match[1].length),
-                        vscode.Uri.file(path.join(directory, match[1]))
+                        new vscode.Range(line, match.index + 10 + match[1].length, line, match.index + 10 + match[1].length + match[2].length),
+                        vscode.Uri.file(path.join(directory, match[2]))
                     ))
+                    console.log(match[1].length)
                 }
             }
             return links
@@ -28,10 +29,10 @@ function newLinkProvider(regex, directory) {
     })
 }
 
-let _idirProv = newLinkProvider(/#include <(.*)>/, includeDir())
+let _idirProv = newLinkProvider(/#(\s*?)include <(.*)>/, includeDir())
 function reset() {
     _idirProv.dispose()
-    _idirProv = newLinkProvider(/#include <(.*)>/, includeDir())
+    _idirProv = newLinkProvider(/#(\s*?)include <(.*)>/, includeDir())
 }
 
 module.exports = {
