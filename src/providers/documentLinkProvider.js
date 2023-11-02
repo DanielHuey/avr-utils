@@ -21,7 +21,6 @@ function newLinkProvider(regex, directory) {
                         new vscode.Range(line, match.index + 10 + match[1].length, line, match.index + 10 + match[1].length + match[2].length),
                         vscode.Uri.file(path.join(directory, match[2]))
                     ))
-                    console.log(match[1].length)
                 }
             }
             return links
