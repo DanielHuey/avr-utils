@@ -12,7 +12,7 @@ NB: All videos in this **README** are downloadable from the video controls.
 
     -   #### >> Create Or Import
 
-        <video src="assets/readme/1a-create-or-import.mp4" loop="true" controls title="Create / Import"></video>
+        ![IMAGE](assets/readme/1a-create-or-import.mp4.gif)
 
         > **You can create a new avr project or import an existing project created from Microchip/Atmel studio.**
 
@@ -20,7 +20,7 @@ NB: All videos in this **README** are downloadable from the video controls.
 
         -   If opening a Microchip project, it asks for the project folder of your **existing project**.
         -   If creating a new project, it asks for the folder to put the project in, then it asks for a **name** for the project (then asks for permission to load the project if you already have another project open in the editor).<br><br>
-            <video src="assets/readme/1b-project-name.mp4" title="Name the Project" loop controls></video>
+            ![IMAGE](assets/readme/1b-project-name.mp4.gif)
 
     -   #### >> No Toolchain?
 
@@ -32,19 +32,19 @@ NB: All videos in this **README** are downloadable from the video controls.
 
         > Generally, I recommend downloading a new toolchain to save you the time.
 
-        <video src="assets/readme/1c-no-toolchain.mp4" autoplay loop controls></video>
+        ![IMAGE](assets/readme/1c-no-toolchain.mp4.gif)
 
     -   #### >> Select a device first
 
-        <video src="assets/readme/1d-select-first-prompt.mp4" controls autoplay title="Error Prompt"></video>
+        ![IMAGE](assets/readme/1d-select-first-prompt.mp4.gif)
 
         Before running a successful build in **`c`**, you need to select a microcontroller so that **avr-gcc** does not give build errors.
         <hr>
-        <video src="assets/readme/1e-select-and-build.mp4" controls title="Select and Build"></video>
+        ![IMAGE](assets/readme/1e-select-and-build.mp4.gif)
 
         Once you build the project successfully, you will get a `.elf` file, a `.hex` file and an `.o` file created for you within the Debug folder in your project.
 
-        <video src="assets/readme/1f-build-outputs.mp4" controls title="Build"></video>
+        ![IMAGE](assets/readme/1f-build-outputs.mp4.gif)
 
 -   ### Code Completions
 
@@ -52,13 +52,13 @@ NB: All videos in this **README** are downloadable from the video controls.
 
         Within the "`main.c`" file or any other project file in **`c`**, you can get completions for the **avr-gcc** headers or the project-level headers.
 
-        <video src="assets/readme/2a-completions.mp4" title="Header Autocomplete" loop controls></video>
+        ![IMAGE](assets/readme/2a-completions.mp4.gif)
 
     -   #### >> Header document links
 
         You can easily open header files if you need to read documentation or edit them through the links provided as shown below.
 
-        <video src="assets/readme/2b-header-links.mp4" controls title="Header Links" loop></video>
+        ![IMAGE](assets/readme/2b-header-links.mp4.gif)
 
 -   ### Object Definitions
 
@@ -66,7 +66,7 @@ NB: All videos in this **README** are downloadable from the video controls.
 
         After selecting a device, you can access it's definitions like for registers like `DDRA` or `PORTA`. If the device has a register, you can press `Ctrl` or `Cmd` and click the register variable using your pointer to get taken to the definition, and of course if the register doesn't exist on the selected device, you won't get definitions.
 
-        <video src="assets/readme/3a-definitions-from-device-headers.mp4" controls title="Device header file" loop></video>
+        ![IMAGE](assets/readme/3a-definitions-from-device-headers.mp4.gif)
 
         Of course, this works on variables and functions too.
 
@@ -74,7 +74,7 @@ NB: All videos in this **README** are downloadable from the video controls.
 
         Header files within the project directory can also contribute to the definitions. In general, any file that you "`#include`" will contribute to the definitions.
 
-        <video src="assets/readme/3b-definitions-from-own-headers.mp4" controls title="Own definitions" loop></video>
+        ![IMAGE](assets/readme/3b-definitions-from-own-headers.mp4.gif)
 
 <!-- ## Requirements
 
@@ -100,7 +100,7 @@ The extension also now has some settings accessible from `Ctrl+,` or `Cmd+,` and
 If you have the extension `ms-vscode.cpptools` installed, it will cause red squiggles in your code, plus it will create extra buttons in the ui which may not build your AVR.<br>
 Therefore to solve this, I registered a new language called "`AVR C`" which handles the same file extension `.c` and so if you need to use your IDE for normal C development, you can just switch the language as shown below.
 
-<video src="assets/readme/5-languages.mp4" controls title="Language Switching" loop></video>
+![IMAGE](assets/readme/5-languages.mp4.gif)
 
 ## Release Notes
 
