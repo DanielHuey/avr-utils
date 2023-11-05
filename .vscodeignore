@@ -9,5 +9,4 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 folders.json
 src/storage/data.json
-assets/**
 **/*.vsix

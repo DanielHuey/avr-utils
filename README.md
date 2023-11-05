@@ -1,33 +1,80 @@
 # avr-utils README
 
-Welcome to `avr-utils`.
+Welcome to **`avr-utils`**.
 
 This extension helps users to write and compile code for their avr microcontrollers straight from the comfort of their favourite Code editor, **VScode**
 
+NB: All videos in this **README** are downloadable from the video controls.
+
 ## Features
 
--   **Projects: Creating and importing**
-    <!-- ![Projects]assets/projects.png) -->
+-   ### Projects: Creating and importing
 
-    You can create a new avr project or import an existing project created from Microchip/Atmel studio. By default, it creates a new project with `main.c` in a src folder.
-    <hr>
+    -   #### >> Create Or Import
 
--   **Code Completions**
-    <!-- ![Completions]assets/completions.png) -->
+        <video src="assets/readme/1a-create-or-import.mp4" loop="true" controls title="Create / Import"></video>
 
-    The extension provides basic code completions for the common header files.
-    <hr>
+        > **You can create a new avr project or import an existing project created from Microchip/Atmel studio.**
 
--   **Selecting and changing target device**
-    <!-- ![Selecting]assets/selecting.gif) -->
+        <p>After making a choice, VSCode will ask you to choose a folder. </p>
 
-    You can select and change the build target at any time. Builds complete within seconds and provide you with a `.hex` and `.elf` file inside the Debug folder of the project.<br><br>
-    Selecting a target device for the first time will create a `avr_project.json` file in the project directory which has the name of the device such that you dont have to keep selecting a device each time.<br><br>
-    Once you select a device, a build button becomes visible to you to compile the code for the selected AVR device.
-    <hr>
+        -   If opening a Microchip project, it asks for the project folder of your **existing project**.
+        -   If creating a new project, it asks for the folder to put the project in, then it asks for a **name** for the project (then asks for permission to load the project if you already have another project open in the editor).<br><br>
+            <video src="assets/readme/1b-project-name.mp4" title="Name the Project" loop controls></video>
 
--   **Document Links**
-    The extension allows you to go to definitions of header files used in the active `c` file.
+    -   #### >> No Toolchain?
+
+        You may want to build the opened/newly creared project, but you encounter a popup saying you have no toolchain.
+
+        Don't worry, you just have to download a new toolchain (**you don't have to have Microchip Studio**), or if you already have `Microchip Studio` on your device, you can choose to take time to locate the folder within the install directory of `Microchip Studio` which has the name "`avr8-**`" and contains the following folders, or at least 90% of them.
+
+        ![folders](assets/readme/1c-toolchain-directory.png)<br>
+
+        > Generally, I recommend downloading a new toolchain to save you the time.
+
+        <video src="assets/readme/1c-no-toolchain.mp4" autoplay loop controls></video>
+
+    -   #### >> Select a device first
+
+        <video src="assets/readme/1d-select-first-prompt.mp4" controls autoplay title="Error Prompt"></video>
+
+        Before running a successful build in **`c`**, you need to select a microcontroller so that **avr-gcc** does not give build errors.
+        <hr>
+        <video src="assets/readme/1e-select-and-build.mp4" controls title="Select and Build"></video>
+
+        Once you build the project successfully, you will get a `.elf` file, a `.hex` file and an `.o` file created for you within the Debug folder in your project.
+
+        <video src="assets/readme/1f-build-outputs.mp4" controls title="Build"></video>
+
+-   ### Code Completions
+
+    -   #### >> Toolchain headers and Project headers
+
+        Within the "`main.c`" file or any other project file in **`c`**, you can get completions for the **avr-gcc** headers or the project-level headers.
+
+        <video src="assets/readme/2a-completions.mp4" title="Header Autocomplete" loop controls></video>
+
+    -   #### >> Header document links
+
+        You can easily open header files if you need to read documentation or edit them through the links provided as shown below.
+
+        <video src="assets/readme/2b-header-links.mp4" controls title="Header Links" loop></video>
+
+-   ### Object Definitions
+
+    -   #### >> Device header files
+
+        After selecting a device, you can access it's definitions like for registers like `DDRA` or `PORTA`. If the device has a register, you can press `Ctrl` or `Cmd` and click the register variable using your pointer to get taken to the definition, and of course if the register doesn't exist on the selected device, you won't get definitions.
+
+        <video src="assets/readme/3a-definitions-from-device-headers.mp4" controls title="Device header file" loop></video>
+
+        Of course, this works on variables and functions too.
+
+    -   #### >> Project header files
+
+        Header files within the project directory can also contribute to the definitions. In general, any file that you "`#include`" will contribute to the definitions.
+
+        <video src="assets/readme/3b-definitions-from-own-headers.mp4" controls title="Own definitions" loop></video>
 
 <!-- ## Requirements
 
@@ -40,13 +87,29 @@ The extension comes with some settings added to the command palette. Press `Ctrl
 -   `Open Microchip Project`: You can use this to open a project folder for a project created using Microchip Studio (a.k.a Atmel Studio)
 -   `Create Project`: This is used to create a new project. This command also creates for you some very minimal boilerplate code in `c` to get you started.
 
-<!-- ## Known Issues
+-   `Build/Compile`: This command only appears when the project has been opened and there is an active `c` file. <br>Take note that this command can also be invoked simply by pressing `F5` on your keyboard, or by the Build button at the bottom of the VSCode window.
 
-Calling out known issues can help limit users opening duplicate issues against your extension. -->
+## Settings Contributions
+
+The extension also now has some settings accessible from `Ctrl+,` or `Cmd+,` and then search for "**AVR Utils**":
+
+-   `Show terminal at each build`: This setting is useful to ensure that there are no build errors arising from your code since an extension cannot directly get `stdout` from the terminal to parse errors. You can turn this off in case you don't need it.
+
+## Known Issues
+
+If you have the extension `ms-vscode.cpptools` installed, it will cause red squiggles in your code, plus it will create extra buttons in the ui which may not build your AVR.<br>
+Therefore to solve this, I registered a new language called "`AVR C`" which handles the same file extension `.c` and so if you need to use your IDE for normal C development, you can just switch the language as shown below.
+
+<video src="assets/readme/5-languages.mp4" controls title="Language Switching" loop></video>
 
 ## Release Notes
 
 Release notes section.
+
+### 0.0.2
+
+-   Better integration with Assembly language development.
+-   Code coloring following tmLanguage rules for both `avr-c` and `asm/s`.
 
 ### 0.0.1
 
