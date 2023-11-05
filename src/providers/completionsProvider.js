@@ -37,7 +37,7 @@ function _getCompletions(directory, type, end) {
  */
 function _registerCompletions({ directory, triggers = [], regex = /#include\s+<([^>]*)$/, end = '>' }) {
     return vscode.languages.registerCompletionItemProvider(
-        "c",
+        "avr-c",
         {
             provideCompletionItems: (document, position) => {
                 // Get the text of the document up to the completion position.

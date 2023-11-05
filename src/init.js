@@ -69,7 +69,7 @@ async function buttonVisibility() {
         });
         try {
             if (vscode.window.activeTextEditor) {
-                if (vscode.window.activeTextEditor.document.languageId !== "c" && vscode.window.activeTextEditor.document.languageId !== "asm") {
+                if (vscode.window.activeTextEditor.document.languageId !== "avr-c" && vscode.window.activeTextEditor.document.languageId !== "asm") {
                     toggleButtons(true);
                 } else {
                     toggleButtons();
@@ -144,8 +144,7 @@ async function getWorkspaceRelatedStuff(context) {
             if (!fs.existsSync(pathtovscode)) {
                 fs.mkdirSync(pathtovscode);
             }
-            require("./c_cpp")();
-            context.subscriptions.push(createLinkProvider(/#include "(.*)"/, thisWorkspace().uri.fsPath));
+            context.subscriptions.push(createLinkProvider(/#(\s*?)include "(.*)"/, thisWorkspace().uri.fsPath));
             context.subscriptions.push(registerCompletions({ directory: thisWorkspace().uri.fsPath, triggers: ['"'], regex: /#include\s+"([^"]*)$/, end: "" }));
             if (fs.existsSync(path.join(pathtovscode, "avr_project.json"))) {
                 let thejson = JSON.parse(fs.readFileSync(path.join(pathtovscode, "avr_project.json"), "utf8"));

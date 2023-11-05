@@ -17,6 +17,9 @@ module.exports = {
     toolchainDir,
     /** @type {Map<string, vscode.Location[]>} */
     previousDefinitions: new Map(),
+    getTerminal,
+    workspaceConfig: vscode.workspace.getConfiguration,
+    currentExtension: () => path.extname(vscode.window.activeTextEditor.document.fileName),
 };
 
 let _thisWorkspace = null;
@@ -59,6 +62,26 @@ function anInnerDir() {
     return dir;
 }
 
+/**@returns {vscode.Terminal} */
+function getTerminal() {
+    let _avrutilsterminal = undefined;
+    if (vscode.window.terminals.length > 0) {
+        vscode.window.terminals.forEach((terminal) => {
+            if (terminal.name === "avr-utils") {
+                _avrutilsterminal = terminal;
+            }
+        });
+    }
+    if (!_avrutilsterminal) {
+        _avrutilsterminal = vscode.window.createTerminal({
+            name: "avr-utils",
+            cwd: getThisWorkspace().uri.fsPath,
+            isTransient: false,
+        });
+    }
+    setTimeout(() => {}, 100);
+    return _avrutilsterminal;
+}
 function ends() {
     return [
         {

@@ -2,7 +2,11 @@
     "name": "avr-utils",
     "displayName": "AVR Utils",
     "description": "This extension will help you to compile code for avr based microcontrollers straight from the comfort of your favourite code editor!",
-    "version": "0.0.1",
+    "version": "0.0.2",
+    "repository": {
+        "url": "https://github.com/DanielHuey/avr-utils.git",
+        "type": "git"
+    },
     "engines": {
         "vscode": "^1.60.0"
     },
@@ -11,7 +15,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:c",
+        "onLanguage:avr-c",
         "onLanguage:asm"
     ],
     "main": "./extension.js",
@@ -29,7 +33,7 @@
                 "command": "avr-utils.compileProject",
                 "title": "AVR Utils: Build/Compile",
                 "icon": "$(debug-start)",
-                "enablement": "resourceLangId =~ /^(c|asm)$/"
+                "enablement": "resourceLangId =~ /^(avr-c|asm)$/"
             }
         ],
         "menus": {
@@ -44,15 +48,60 @@
             {
                 "command": "avr-utils.compileProject",
                 "key": "F5",
-                "when": "editorLangId =~ /^(c|asm)$/"
+                "when": "editorLangId =~ /^(avr-c|asm)$/"
             }
         ],
         "languages": [
             {
-                "id": "c",
+                "id": "avr-c",
                 "extensions": [
-                    ".c"
+                    ".c",
+                    ".h"
+                ],
+                "aliases": [
+                    "AVR C"
+                ],
+                "mimetypes": [
+                    "text/x-csrc"
+                ],
+                "icon": {
+                    "dark": "assets/avr.png",
+                    "light": "assets/avr.png"
+                }
+            },
+            {
+                "id": "asm",
+                "extensions": [
+                    ".asm",
+                    ".s"
+                ],
+                "aliases": [
+                    "Assembly"
                 ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "avr-c",
+                "scopeName": "source.avr-c",
+                "path": "./syntax/avr-c.json"
+            },
+            {
+                "language": "asm",
+                "scopeName": "source.asm",
+                "path": "./syntax/asm.json"
+            }
+        ],
+        "configuration": [
+            {
+                "title": "Builds",
+                "properties": {
+                    "avrUtils.showTerminalAtBuild": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show Terminal at each build"
+                    }
+                }
             }
         ]
     },
@@ -75,7 +124,7 @@
         "tar": "^6.2.0"
     },
     "author": "Daniel Strong Agani <aganidanielstrong@gmail.com> (https://github.com/DanielHuey)",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "directories": {
         "test": "test"
     },
@@ -83,8 +132,12 @@
         "avr",
         "atmel"
     ],
-    "publisher": "danielHuey",
+    "publisher": "agani-ds",
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/DanielHuey/avr-utils/issues"
+    },
+    "homepage": "https://github.com/DanielHuey/avr-utils#readme"
 }

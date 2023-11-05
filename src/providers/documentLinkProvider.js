@@ -10,22 +10,24 @@ const { includeDir } = require('../utils')
  * @returns 
  */
 function newLinkProvider(regex, directory) {
-    return vscode.languages.registerDocumentLinkProvider('c' || 'cpp', {
-        provideDocumentLinks: (document) => {
-            const links = []
-            for (let line = 0; line < document.lineCount; line++) {
-                const lineText = document.lineAt(line).text
-                const match = lineText.match(regex)
-                if (match) {
-                    links.push(new vscode.DocumentLink(
-                        new vscode.Range(line, match.index + 10 + match[1].length, line, match.index + 10 + match[1].length + match[2].length),
-                        vscode.Uri.file(path.join(directory, match[2]))
-                    ))
+    return vscode.languages.registerDocumentLinkProvider(
+        'avr-c',
+        {
+            provideDocumentLinks: (document) => {
+                const links = []
+                for (let line = 0; line < document.lineCount; line++) {
+                    const lineText = document.lineAt(line).text
+                    const match = lineText.match(regex)
+                    if (match) {
+                        links.push(new vscode.DocumentLink(
+                            new vscode.Range(line, match.index + 10 + match[1].length, line, match.index + 10 + match[1].length + match[2].length),
+                            vscode.Uri.file(path.join(directory, match[2]))
+                        ))
+                    }
                 }
+                return links
             }
-            return links
-        }
-    })
+        })
 }
 
 let _idirProv = newLinkProvider(/#(\s*?)include <(.*)>/, includeDir())

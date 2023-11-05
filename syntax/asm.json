@@ -1,0 +1,92 @@
+{
+    "name": "Assembly",
+    "scopeName": "source.asm",
+    "filetypes": ["asm"],
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#functionNames"
+        },
+        {
+            "include": "#preprocessor"
+        },
+        {
+            "include": "#identifiers"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "begin": "^/\\*",
+                    "end": "\\*/",
+                    "name": "comment.block.asm"
+                },
+                {
+                    "match": ";.*$",
+                    "name": "comment.line.semicolon.asm"
+                },
+                {
+                    "match": "//.*$",
+                    "name": "comment.line.double-slash.asm"
+                }
+            ]
+        },
+        "keywords":{
+            "patterns": [
+                {
+                    "name": "keyword.asm",
+                    "match": "^\\s*?\\b(add|adc|adiw|sub|sbc|subi|sbiw|and|andi|or|ori|eor|com|neg|sbr|cbr|inc|dec|tst|clr|ser|cpse|cp|cpc|cpi|sbrc|sbrs|sbi|cbi|brbs|brbc|rjmp|rcall|icall|ret|reti|jmp|call|ldi|lds|ld|ldx|ldy|ldz|sts|st|stx|sty|stz|lpm|elpm|spm|in|out|push|pop|lsl|lsr|rol|ror|asr|swap|bset|bclr|sbi|cbi|bld|bst|sec|sez|sen|sev|ses|seh|sei|clc|clz|cln|clv|cls|clh|cli|wdr|break|nop|sleep|wakeup)\\b"
+                }
+            ]
+        },
+        "numbers":{
+            "patterns":[
+                {
+                    "name": "constant.numeric.asm",
+                    "match": "\\$[0-9]+"
+                }
+            ]
+        },
+        "functionNames": {
+            "patterns": [
+                {
+                    "name": "entity.name.function.asm",
+                    "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\b"
+                }
+            ]
+        },
+        "preprocessor": {
+            "patterns": [
+                {
+                    "name": "keyword.control.asm",
+                    "match": "^\\.include\\b"
+                },
+                {
+                    "name": "keyword.control.asm",
+                    "match": "^\\.equ\\b"
+                },
+                {
+                    "name": "keyword.control.asm",
+                    "match": "^\\.org\\b"
+                }
+            ]
+        },
+        "identifiers": {
+            "patterns": [
+                {
+                    "name": "variable.asm",
+                    "match": "\\%[A-Za-z0-9_]+"
+                }
+            ]
+        }
+    }
+}
