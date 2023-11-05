@@ -24,10 +24,6 @@ async function compileProject() {
     if (!vscode.window.activeTextEditor.document.uri.fsPath.includes(thisWorkspace().uri.fsPath)) {
         await changeWorkspace();
     }
-    if (!selectedDevice() && currentExtension() === ".c") {
-        vscode.window.showErrorMessage("Please select a device first");
-        return;
-    }
     if (!fs.existsSync(toolchainDir()) || !fs.existsSync(path.join(toolchainDir(), "bin"))) {
         let checkForToolchain = await vscode.window.showErrorMessage(
             `No toolchain found at "${toolchainDir()}".\nDownload a new toolchain?`,
@@ -56,6 +52,10 @@ async function compileProject() {
             }
         }
         resetIncludeDir();
+        return;
+    }
+    if (!selectedDevice() && currentExtension() === ".c") {
+        vscode.window.showErrorMessage("Please select a device first");
         return;
     }
 
