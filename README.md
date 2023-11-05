@@ -106,10 +106,16 @@ Therefore to solve this, I registered a new language called "`AVR C`" which hand
 
 Release notes section.
 
+### 0.0.3
+
+-   Changed README to use gifs
+-   Changed all video assets to gifs
+
 ### 0.0.2
 
 -   Better integration with Assembly language development.
 -   Code coloring following tmLanguage rules for both `avr-c` and `asm/s`.
+-   Published to VSCode Marketplace
 
 ### 0.0.1
 
