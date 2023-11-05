@@ -1,8 +1,7 @@
 const vscode = require("vscode");
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
-const { devices, initWorkspace, thisWorkspace, dataObject, previousDefinitions } = require("./utils");
+const { devices, initWorkspace, thisWorkspace, previousDefinitions } = require("./utils");
 const { createLinkProvider } = require("./providers/documentLinkProvider");
 const { registerCompletions } = require("./providers/completionsProvider");
 
@@ -29,15 +28,6 @@ async function init(context) {
         }
         if (event.added.length > 0) {
             getWorkspaceRelatedStuff(context);
-        }
-    });
-
-    fs.readFile(path.join(__dirname, "storage", "data.json"), "utf8", (err) => {
-        if (err) {
-            dataObject({
-                toolchain_directory: `${path.join(os.homedir(), "Documents")}`,
-            });
-            return;
         }
     });
 
@@ -99,7 +89,7 @@ async function selectDevice() {
         title: "List of Available AVR Devices",
     });
     if (_devOpt !== undefined) {
-        previousDefinitions.clear()
+        previousDefinitions.clear();
         _selectedDevice = _devOpt;
         selectDeviceButton.text = _selectedDevice;
         if (_devOpt.endsWith("-asm")) {
@@ -109,7 +99,7 @@ async function selectDevice() {
         selectDeviceButton.tooltip = `Compiling for ${_selectedDevice}`;
         if (!_compileButtonVisible) showCompileButton();
         //write to avr_project.json
-        fs.writeFileSync(path.join(thisWorkspace().uri.fsPath, '.vscode', "avr_project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
+        fs.writeFileSync(path.join(thisWorkspace().uri.fsPath, ".vscode", "avr_project.json"), JSON.stringify({ avrDevice: _selectedDevice }), "utf8");
     }
 }
 function showCompileButton() {
@@ -138,7 +128,6 @@ async function getWorkspaceRelatedStuff(context) {
     if (workspaceNotYetAccessible) {
         if (vscode.workspace.workspaceFolders) {
             initWorkspace(); // enables the "workspace" utils
-            /* Find a way to verify if its an avr project */
 
             const pathtovscode = path.join(thisWorkspace().uri.fsPath, ".vscode");
             if (!fs.existsSync(pathtovscode)) {

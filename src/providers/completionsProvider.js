@@ -28,14 +28,14 @@ function _getCompletions(directory, type, end) {
 }
 
 /**
- * @param {Object} param0 
- * @param {string} param0.directory 
- * @param {any[]} [param0.triggers=[]] 
- * @param {RegExp} [param0.regex=/#include\s+<([^>]*)$/] 
+ * @param {Object} param0
+ * @param {string} param0.directory
+ * @param {any[]} [param0.triggers=[]]
+ * @param {RegExp} [param0.regex=/#include\s+<([^>]*)$/]
  * @param {">"|""} [param0.end='>'] the ending character after an insert
  * @returns {vscode.Disposable}
  */
-function _registerCompletions({ directory, triggers = [], regex = /#include\s+<([^>]*)$/, end = '>' }) {
+function _registerCompletions({ directory, triggers = [], regex = /#include\s+<([^>]*)$/, end = ">" }) {
     return vscode.languages.registerCompletionItemProvider(
         "avr-c",
         {

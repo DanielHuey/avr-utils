@@ -65,8 +65,8 @@
                     "text/x-csrc"
                 ],
                 "icon": {
-                    "dark": "assets/avr.png",
-                    "light": "assets/avr.png"
+                    "dark": "assets/icons/avr.png",
+                    "light": "assets/icons/avr.png"
                 }
             },
             {

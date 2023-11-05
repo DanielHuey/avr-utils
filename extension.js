@@ -1,12 +1,11 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 // eslint-disable-next-line no-unused-vars
-const vscode = require('vscode');
-const { init } = require('./src/init');
-const { defaultCompletions } = require('./src/providers/completionsProvider')
-const { includeDirProvider } = require('./src/providers/documentLinkProvider')
-const { definitions } = require('./src/providers/definitionProvider');
-const registerCommands = require('./src/registerCommands');
+const vscode = require("vscode");
+const { init } = require("./src/init");
+const registerCommands = require("./src/registerCommands");
+const registerProviders = require("./src/registerProviders");
+const { dataObject } = require("./src/utils");
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -14,25 +13,20 @@ const registerCommands = require('./src/registerCommands');
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
-	registerCommands(); // initialize the commands
-	context.subscriptions.push(
-		defaultCompletions,
-		includeDirProvider,
-		definitions
-	)
-	init(context);
+async function activate(context) {
+    dataObject(); // To initialize the data.json file
+    await init(context);
 
-	console.log('"avr-utils" is now active!');
+    registerCommands();
+    registerProviders(context);
 
-
-
+    console.log('"avr-utils" is now active!');
 }
 
 // This method is called when your extension is deactivated
-function deactivate() { }
+function deactivate() {}
 
 module.exports = {
-	activate,
-	deactivate
-}
+    activate,
+    deactivate,
+};

@@ -1,4 +1,4 @@
-const { platform } = require("os");
+const { platform, homedir } = require("os");
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
@@ -40,10 +40,18 @@ async function changeWorkspace() {
  * @param {Object} saveObject
  */
 function dataObject(saveObject = null) {
-    if (saveObject !== null) {
+    if (saveObject) {
         fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(saveObject), "utf-8");
         return;
     }
+    fs.readFile(path.join(__dirname, "storage", "data.json"), "utf8", (err) => {
+        if (err) {
+            dataObject({
+                toolchain_directory: `${path.join(homedir(), "Documents")}`,
+            });
+            return;
+        }
+    });
     return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
 }
 /** Toolchain Directory */
