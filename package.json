@@ -121,6 +121,7 @@
         "typescript": "^5.2.2"
     },
     "dependencies": {
+        "@vscode/vsce": "^2.22.0",
         "tar": "^6.2.0"
     },
     "author": "Daniel Strong Agani <aganidanielstrong@gmail.com> (https://github.com/DanielHuey)",
