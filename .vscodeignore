@@ -8,5 +8,8 @@ vsc-extension-quickstart.md
 **/*.map
 **/.eslintrc.json
 folders.json
-src/storage/data.json
+src/**
+node_modules/**
+out/storage/data.json
+#storage/data.json
 **/*.vsix

@@ -18,7 +18,7 @@
         "onLanguage:avr-c",
         "onLanguage:asm"
     ],
-    "main": "./extension.js",
+    "main": "./out/main.js",
     "contributes": {
         "commands": [
             {
@@ -108,20 +108,28 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "node ./test/runTest.js"
+        "test": "node ./test/runTest.js",
+        "vscode:prepub": "npm run esbuild-base -- --minify",
+        "esbuild-base": "esbuild ./extension.js --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+        "esbuild": "npm run esbuild-base -- --sourcemap",
+        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+        "test-compile": "tsc -p ./"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.2",
         "@types/node": "18.x",
         "@types/vscode": "^1.60.0",
         "@vscode/test-electron": "^2.3.4",
+        "@vscode/vsce": "^2.22.0",
+        "esbuild": "^0.19.10",
         "eslint": "^8.50.0",
         "glob": "^10.3.3",
         "mocha": "^10.2.0",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "@vscode/vsce": "^2.22.0",
         "tar": "^6.2.0"
     },
     "author": "Daniel Strong Agani <aganidanielstrong@gmail.com> (https://github.com/DanielHuey)",
