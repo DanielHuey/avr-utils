@@ -4,8 +4,6 @@ Welcome to **`avr-utils`**.
 
 This extension helps users to write and compile code for their avr microcontrollers straight from the comfort of their favourite Code editor, **VScode**
 
-NB: All videos in this **README** are downloadable from the video controls.
-
 ## Features
 
 -   ### Projects: Creating and importing
