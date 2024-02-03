@@ -17,7 +17,7 @@ module.exports = {
     toolchainDir,
     /** @type {Map<string, vscode.Location[]>} */
     previousDefinitions: new Map(),
-    getTerminal,
+    sendCursorTo,
     workspaceConfig: vscode.workspace.getConfiguration,
     currentExtension: () => path.extname(vscode.window.activeTextEditor.document.fileName),
 };
@@ -70,25 +70,23 @@ function anInnerDir() {
     return dir;
 }
 
-/**@returns {vscode.Terminal} */
-function getTerminal() {
-    let _avrutilsterminal = undefined;
-    if (vscode.window.terminals.length > 0) {
-        vscode.window.terminals.forEach((terminal) => {
-            if (terminal.name === "avr-utils") {
-                _avrutilsterminal = terminal;
-            }
-        });
-    }
-    if (!_avrutilsterminal) {
-        _avrutilsterminal = vscode.window.createTerminal({
-            name: "avr-utils",
-            cwd: getThisWorkspace().uri.fsPath,
-            isTransient: false,
-        });
-    }
-    setTimeout(() => {}, 100);
-    return _avrutilsterminal;
+/**
+ * 
+ * @param {vscode.Position} pos 
+ */
+function sendCursorTo(pos){
+    var origin = new vscode.Position(0,0)
+    vscode.window.activeTextEditor.selection = new vscode.Selection(origin,origin)
+    vscode.commands.executeCommand("cursorMove",{
+        to: "down",
+        by: "line",
+        value: (pos.line-1),
+    })
+    vscode.commands.executeCommand("cursorMove",{
+        to: pos.character<=1 ? "left" : "right",
+        by: "character",
+        value: pos.character,
+    })
 }
 function ends() {
     return [

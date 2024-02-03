@@ -2,6 +2,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const pro = require("child_process");
 const {
     currentPlatform,
     downloadsUrl,
@@ -11,9 +12,8 @@ const {
     anInnerDir,
     toolchainDir,
     dataObject,
-    getTerminal,
-    workspaceConfig,
     currentExtension,
+    sendCursorTo,
 } = require("../utils");
 const { resetIncludeDir } = require("../providers/documentLinkProvider");
 const { selectedDevice, spinCompileButton } = require("../init");
@@ -76,10 +76,22 @@ async function compileProject() {
         `${thisWorkspace().name}.elf`
     )}" "${path.join(thisWorkspace().uri.fsPath, anInnerDir(), "Debug", `${thisWorkspace().name}.hex`)}"`;
 
-    getTerminal().sendText(`${mainDotO} && ${elfCmd} && ${hexCmd}`);
-    if (workspaceConfig().get("avrUtils.showTerminalAtBuild")) getTerminal().show();
-    await spinCompileButton();
-    vscode.window.showInformationMessage("Build Completed");
+    spinCompileButton();
+    pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`,{windowsHide:true},(err)=>{
+        if (err) {
+            var msg = err.message.split("\n",2)[1];
+            vscode.window.showErrorMessage("Build Failed:\n" + msg);
+            var msgsplits = msg.split(":");
+            var line = Number(msgsplits[2]);
+            var character = Number(msgsplits[3]) - 1;
+            var pos = new vscode.Position(line,character);
+            sendCursorTo(pos);
+        } else {
+            vscode.window.showInformationMessage("Build Completed");
+        }
+        spinCompileButton(false);
+    });
+    
 }
 
 module.exports = compileProject;

@@ -2,7 +2,7 @@
     "name": "avr-utils",
     "displayName": "AVR Utils",
     "description": "This extension will help you to compile code for avr based microcontrollers straight from the comfort of your favourite code editor!",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "repository": {
         "url": "https://github.com/DanielHuey/avr-utils.git",
         "type": "git"
@@ -91,18 +91,6 @@
                 "scopeName": "source.asm",
                 "path": "./syntax/asm.json"
             }
-        ],
-        "configuration": [
-            {
-                "title": "Builds",
-                "properties": {
-                    "avrUtils.showTerminalAtBuild": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Show Terminal at each build"
-                    }
-                }
-            }
         ]
     },
     "scripts": {
@@ -130,6 +118,7 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
+        "decompress": "^4.2.1",
         "tar": "^6.2.0"
     },
     "author": "Daniel Strong Agani <aganidanielstrong@gmail.com> (https://github.com/DanielHuey)",

@@ -107,12 +107,12 @@ function showCompileButton() {
     compileButton.show();
 }
 
-async function spinCompileButton() {
-    compileButton.text = "$(sync~spin) Building...";
-    await new Promise((r) => {
-        setTimeout(r, 750);
-    });
-    compileButton.text = "$(debug-start) Build";
+function spinCompileButton(on=true) {
+    if (on) {
+        compileButton.text = "$(sync~spin) Building...";
+    } else {
+        compileButton.text = "$(debug-start) Build";
+    }
 }
 
 /**@returns {string} */

@@ -39,6 +39,8 @@ const keywords = [
     "while",
 ];
 
+//this code here has a lot of hard coded "variable" outcomes, 
+//especially at the "avrdir.forEach" loop in order to get correct filenames.
 const provider = vscode.languages.registerDefinitionProvider("avr-c", {
     provideDefinition: (doc, pos) => {
         const wordBeingChecked = doc.getText(doc.getWordRangeAtPosition(pos));

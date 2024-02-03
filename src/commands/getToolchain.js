@@ -1,5 +1,6 @@
 const vscode = require("vscode");
 const tar = require("tar");
+const decompress = require("decompress");
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
@@ -32,7 +33,7 @@ async function getToolchain(platform, downloadsUrl, ends) {
     vscode.window.showInformationMessage(`Downloading toolchain for ${platform}\n${newUrl}`);
 
     get(newUrl, (response) => {
-        response.pipe(fs.createWriteStream(streamName));
+        response.pipe(fs.createWriteStream(path.join(os.homedir(), "Documents",streamName)));
         response.on("end", async () => {
             vscode.window.showInformationMessage("Toolchain downloaded");
 
@@ -75,7 +76,9 @@ async function getToolchain(platform, downloadsUrl, ends) {
                 dataObject(extension_data);
             });
 
-            extractTarball(`./${streamName}`, directory);
+            platform.toString()==="win32"
+            ? extractZip(`${path.join(os.homedir(), "Documents",streamName)}`, directory)
+            : extractTarball(`${path.join(os.homedir(), "Documents",streamName)}`, directory);
         });
     });
 }
@@ -97,6 +100,17 @@ function extractTarball(tarball, directory) {
             vscode.window.showInformationMessage(`Toolchain extracted to ${directory}`);
             fs.unlinkSync(tarball);
         });
+}
+/**
+ *
+ * @param {string} file - path to file
+ * @param {string} directory - directory to extract to
+ */
+function extractZip(file, directory) {
+    decompress(file,directory,{strip:1}).then(()=>{
+        vscode.window.showInformationMessage(`Toolchain extracted to ${directory}`);
+        fs.unlinkSync(file);
+    });
 }
 
 module.exports = getToolchain;

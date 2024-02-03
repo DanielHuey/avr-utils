@@ -15,9 +15,9 @@ const { dataObject } = require("./src/utils");
  */
 async function activate(context) {
     dataObject(); // To initialize the data.json file
+    registerCommands();
     await init(context);
 
-    registerCommands();
     registerProviders(context);
 
     console.log('"avr-utils" is now active!');
