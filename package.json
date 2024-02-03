@@ -7,6 +7,7 @@
         "url": "https://github.com/DanielHuey/avr-utils.git",
         "type": "git"
     },
+    "icon": "assets/icons/extension-icon.png",
     "engines": {
         "vscode": "^1.60.0"
     },
