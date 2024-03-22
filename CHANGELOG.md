@@ -2,6 +2,15 @@
 
 All notable changes to the "avr-utils" extension will be documented in this file.
 
+### [0.1.2]
+
+-   Refactored Code to get the proper list of devices directly from `io.h` file in the avr toolchain. [#3](https://github.com/DanielHuey/avr-utils/issues/3)
+-   Find the list of devices and their files from `out/storage/device_and_file.json`. It's generated using the python script from `src/storage/getDevices.py` (you may need to check it from the `dev` branch)
+
+### [0.1.1]
+
+-   Added an icon
+
 ### [0.0.3]
 
 -   Readme now uses GIFs so it's compatible with Marketplace
