@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const vscode = require("vscode");
-const { includeDir, thisWorkspace, previousDefinitions } = require("../utils");
+const { includeDir, thisWorkspace, previousDefinitions, headerfile } = require("../utils");
 const { EOL } = require("os");
 const { selectedDevice } = require("../init");
 const keywords = [
@@ -49,21 +49,23 @@ const provider = vscode.languages.registerDefinitionProvider("avr-c", {
         }
         const listOfGlobalHeaders = [];
         const listOfWorkspaceHeaders = [];
-        const dmatch = selectedDevice().match(/^([a-zA-Z]+)((\d*)(.*?(\d?)))$/);
-        const avrdir = fs.readdirSync(path.join(includeDir(), "avr"));
-        avrdir.forEach((h) => {
-            if (dmatch[0].includes("rf401") && h === "io86r401.h") {
-                listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
-            } else if (dmatch[4].startsWith("pwm") && h.includes("pwm")) {
-                listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
-            } else if (dmatch[4].startsWith("can") && h.includes(dmatch[4])) {
-                listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
-            } else if (dmatch[4].startsWith("usb") && h.includes(dmatch[4].replace("usb", "u").substring(0, dmatch[4].replace("usb", "u").length - 1))) {
-                listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
-            } else if (h.includes(`${dmatch[1].includes("atmega") ? "m" : ""}${dmatch[2]}.h`)) {
-                listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
-            }
-        });
+        // const dmatch = selectedDevice().match(/^([a-zA-Z]+)((\d*)(.*?(\d?)))$/);
+        // const avrdir = fs.readdirSync(path.join(includeDir(), "avr"));
+        // avrdir.forEach((h) => {
+        //     if (dmatch[0].includes("rf401") && h === "io86r401.h") {
+        //         listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
+        //     } else if (dmatch[4].startsWith("pwm") && h.includes("pwm")) {
+        //         listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
+        //     } else if (dmatch[4].startsWith("can") && h.includes(dmatch[4])) {
+
+        //         listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
+        //     } else if (dmatch[4].startsWith("usb") && h.includes(dmatch[4].replace("usb", "u").substring(0, dmatch[4].replace("usb", "u").length - 1))) {
+        //         listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
+        //     } else if (h.includes(`${dmatch[1].includes("atmega") ? "m" : ""}${dmatch[2]}.h`)) {
+        //         listOfGlobalHeaders.push(path.join(includeDir(), "avr", h));
+        //     }
+        // });
+        listOfGlobalHeaders.push(path.join(includeDir(), "avr", headerfile()[selectedDevice()]))
 
         const globre = /^#include\s<(.*)>/;
         const locre = /^#include\s"(.*)"/;
@@ -83,14 +85,14 @@ const provider = vscode.languages.registerDefinitionProvider("avr-c", {
 
         const hashDefineRe = new RegExp(`^#\\s?define\\s+\\b${wordBeingChecked}\\b`);
         const funcVarRe = new RegExp(
-            `\\b(void|int|char|short|long|float|double|signed|unsigned|const|static|extern|auto|register|volatile|inline)\\b\\s*?${wordBeingChecked}\\s*?`
+            `\\b(void|int|char|short|long|float|double|signed|unsigned|const|static|extern|auto|register|volatile|inline)\\b\\s*?${wordBeingChecked} .*?`
         );
 
         /**@param {string[]} headerList  */
         function definitionsFromHeaders(headerList) {
             headerList.forEach((header) => {
                 const headerDocument = fs.readFileSync(header, "utf8");
-                const documentLines = headerDocument.split(EOL);
+                const documentLines = headerDocument.split("\n");
                 for (let line = 0; line < documentLines.length; line++) {
                     if (hashDefineRe.test(documentLines[line])) {
                         const match = documentLines[line].match(hashDefineRe);

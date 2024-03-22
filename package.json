@@ -19,7 +19,7 @@
         "onLanguage:avr-c",
         "onLanguage:asm"
     ],
-    "main": "./out/main.js",
+    "main": "./extension.js",
     "contributes": {
         "commands": [
             {
