@@ -51,15 +51,13 @@ var require_utils = __commonJS({
         fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(saveObject), "utf-8");
         return;
       }
-      fs.readFile(path.join(__dirname, "storage", "data.json"), "utf8", (err) => {
-        if (err) {
-          dataObject2({
-            toolchain_directory: `${path.join(homedir(), "Documents")}`
-          });
-          return;
-        }
-      });
-      return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
+      try {
+        return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
+      } catch {
+        let temp = { toolchain_directory: `${path.join(homedir(), "Documents")}` };
+        dataObject2(temp);
+        return temp;
+      }
     }
     function toolchainDir() {
       return dataObject2().toolchain_directory;
@@ -75,18 +73,7 @@ var require_utils = __commonJS({
       return dir;
     }
     function sendCursorTo(pos) {
-      var origin = new vscode2.Position(0, 0);
-      vscode2.window.activeTextEditor.selection = new vscode2.Selection(origin, origin);
-      vscode2.commands.executeCommand("cursorMove", {
-        to: "down",
-        by: "line",
-        value: pos.line - 1
-      });
-      vscode2.commands.executeCommand("cursorMove", {
-        to: pos.character <= 1 ? "left" : "right",
-        by: "character",
-        value: pos.character
-      });
+      vscode2.window.activeTextEditor.selection = new vscode2.Selection(pos, pos);
     }
     function ends() {
       return [
@@ -427,12 +414,13 @@ Download a new toolchain?`,
       pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`, { windowsHide: true }, (err) => {
         if (err) {
           var msg = err.message.split("\n", 2)[1];
-          vscode2.window.showErrorMessage("Build Failed:\n" + msg);
-          var msgsplits = msg.split(":");
-          var line = Number(msgsplits[2]);
-          var character = Number(msgsplits[3]) - 1;
-          var pos = new vscode2.Position(line, character);
-          sendCursorTo(pos);
+          vscode2.window.showErrorMessage("Build Failed:\n" + msg).then((_s) => {
+            var msgsplits = msg.split(":");
+            var line = Number(msgsplits[2]) - 1;
+            var character = msgsplits[3] === "1" ? Number(msgsplits[3]) - 1 : Number(msgsplits[3]);
+            var pos = new vscode2.Position(line, character);
+            sendCursorTo(pos);
+          });
         } else {
           vscode2.window.showInformationMessage("Build Completed");
         }
