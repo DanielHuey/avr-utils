@@ -50,15 +50,13 @@ function dataObject(saveObject = null) {
         fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(saveObject), "utf-8");
         return;
     }
-    fs.readFile(path.join(__dirname, "storage", "data.json"), "utf8", (err) => {
-        if (err) {
-            dataObject({
-                toolchain_directory: `${path.join(homedir(), "Documents")}`,
-            });
-            return;
-        }
-    });
-    return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
+    try {
+        return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
+    } catch {
+        let temp = {toolchain_directory: `${path.join(homedir(), "Documents")}`};
+        dataObject(temp);
+        return temp;
+    }
 }
 /** Toolchain Directory */
 function toolchainDir() {
@@ -81,19 +79,9 @@ function anInnerDir() {
  * @param {vscode.Position} pos 
  */
 function sendCursorTo(pos){
-    var origin = new vscode.Position(0,0)
-    vscode.window.activeTextEditor.selection = new vscode.Selection(origin,origin)
-    vscode.commands.executeCommand("cursorMove",{
-        to: "down",
-        by: "line",
-        value: (pos.line-1),
-    })
-    vscode.commands.executeCommand("cursorMove",{
-        to: pos.character<=1 ? "left" : "right",
-        by: "character",
-        value: pos.character,
-    })
+    vscode.window.activeTextEditor.selection = new vscode.Selection(pos,pos);
 }
+
 function ends() {
     return [
         {

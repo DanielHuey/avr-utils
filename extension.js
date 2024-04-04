@@ -16,6 +16,7 @@ const { dataObject } = require("./src/utils");
 async function activate(context) {
     dataObject(); // To initialize the data.json file
     registerCommands();
+    // DO NOT MOVE THESE LINES ABOVE. THESE 2 LINES MUST BE FIRST
     await init(context);
 
     registerProviders(context);

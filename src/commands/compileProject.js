@@ -80,12 +80,13 @@ async function compileProject() {
     pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`,{windowsHide:true},(err)=>{
         if (err) {
             var msg = err.message.split("\n",2)[1];
-            vscode.window.showErrorMessage("Build Failed:\n" + msg);
-            var msgsplits = msg.split(":");
-            var line = Number(msgsplits[2]);
-            var character = Number(msgsplits[3]) - 1;
-            var pos = new vscode.Position(line,character);
-            sendCursorTo(pos);
+            vscode.window.showErrorMessage("Build Failed:\n" + msg).then(_s=>{
+                var msgsplits = msg.split(":");
+                var line = Number(msgsplits[2]) - 1;
+                var character = msgsplits[3]==='1'? Number(msgsplits[3]) - 1 : Number(msgsplits[3]);
+                var pos = new vscode.Position(line,character);
+                sendCursorTo(pos);
+            });
         } else {
             vscode.window.showInformationMessage("Build Completed");
         }
