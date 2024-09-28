@@ -8,7 +8,7 @@ module.exports = {
     headerfile:devicesAndFiles,
     currentPlatform: platform(),
     downloadsUrl: "https://ww1.microchip.com/downloads/aemDocuments/documents/DEV/ProductDocuments/SoftwareTools/",
-    ends: ends(),
+    toolchainSources: toolchainSources(),
     dataObject,
     thisWorkspace: getThisWorkspace,
     changeWorkspace,
@@ -42,12 +42,20 @@ async function changeWorkspace() {
     });
     _thisWorkspace = workspace;
 }
-/** The `data.json` object
+/** The `data.json` object.
+ * 
+ * If a `saveObject` is provided, this function saves this object as the 
+ * configuration into the `data.json` file which is used to store the location of the toolchain directory.
+ * 
+ * If `saveObject` isn't provided, or is null, the function acts as a "getter" 
+ * for an object representing the current info stored in `data.json`.
  * @param {Object} saveObject
  */
 function dataObject(saveObject = null) {
     if (saveObject) {
-        fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(saveObject), "utf-8");
+        const oldObject = dataObject();
+        let newObject = {...oldObject, ...saveObject};
+        fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(newObject), "utf-8");
         return;
     }
     try {
@@ -82,7 +90,7 @@ function sendCursorTo(pos){
     vscode.window.activeTextEditor.selection = new vscode.Selection(pos,pos);
 }
 
-function ends() {
+function toolchainSources() {
     return [
         {
             platforms: ["win32"],

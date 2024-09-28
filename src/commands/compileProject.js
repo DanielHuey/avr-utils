@@ -6,7 +6,7 @@ const pro = require("child_process");
 const {
     currentPlatform,
     downloadsUrl,
-    ends,
+    toolchainSources,
     thisWorkspace,
     changeWorkspace,
     anInnerDir,
@@ -33,7 +33,7 @@ async function compileProject() {
         );
         if (checkForToolchain === "Yes") {
             //proceed to get toolchain
-            vscode.commands.executeCommand("avr-utils.getToolchain", currentPlatform, downloadsUrl, ends);
+            vscode.commands.executeCommand("avr-utils.getToolchain", currentPlatform, downloadsUrl, toolchainSources);
             return;
         }
         if (checkForToolchain === "Locate Toolchain Directory") {

@@ -68,7 +68,8 @@
                 "icon": {
                     "dark": "assets/icons/avr.png",
                     "light": "assets/icons/avr.png"
-                }
+                },
+                "configuration": "./syntax/extra-config.json"
             },
             {
                 "id": "asm",
