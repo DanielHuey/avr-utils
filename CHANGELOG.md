@@ -2,6 +2,14 @@
 
 All notable changes to the "avr-utils" extension will be documented in this file.
 
+### [0.1.4]
+- Fix error where commands like "Create New Project" in the command palette claim that they are missing ( Would happen especially on VSCode version < 1.75 ).
+- Added a progress bar when downloading the toolchain, so that you (the user) are aware of the process.
+- Better error message diagnostics, the extension was really lacking in this area as compilations were not giving useful error messages in case errors existed.
+- There was also a (slightly annoying) visual bug where the compile button would render at ALL times. This has also been fixed.
+- Changed the quick action for compiling from `F5` to `F4` because F5 is usually used for debugging.
+- Moving from manual builds of minified js file to a CI based workflow (Thank you, GitHub Actions!)
+
 ### [0.1.2]
 
 -   Refactored Code to get the proper list of devices directly from `io.h` file in the avr toolchain. [#3](https://github.com/DanielHuey/avr-utils/issues/3)
