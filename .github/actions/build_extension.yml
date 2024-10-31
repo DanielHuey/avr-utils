@@ -1,0 +1,45 @@
+name: Extension Builder Action
+
+on:
+  pull_request:
+    branches: 
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js Version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Check and setup caches
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.npm-cache.outputs.cache-hit != true
+        run: npm install
+      
+      - name: Run build script
+        run: npm run avr-utils
+      
+      - name: Package Extension
+        run: vsce pack
+      
+      - name: Save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension-latest.vsix
+          path: "*.vsix"
