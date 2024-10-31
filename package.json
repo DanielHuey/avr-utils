@@ -18,7 +18,9 @@
     "activationEvents": [
         "onLanguage:avr-c",
         "onLanguage:asm",
-        "onStartupFinished"
+        "onStartupFinished",
+        "onCommand:avr-utils.makeProject",
+        "onCommand:avr-utils.openMicrochipStudioProject"
     ],
     "main": "./extension.js",
     "contributes": {
