@@ -7,6 +7,7 @@ This extension helps users to write and compile code for their avr microcontroll
 ## !! New !!
 - Progress bar when downloading toolchain.
 - Better error message diagnostics (Big Improvement!)
+- Simplified Commenting of code.
 
 More in [Changelog.md](./CHANGELOG.md)
 
