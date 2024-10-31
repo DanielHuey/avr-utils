@@ -16,6 +16,7 @@ const {
     sendCursorTo,
 } = require("../utils");
 const { resetIncludeDir } = require("../providers/documentLinkProvider");
+const { generateDiagnostics, clearDiagnostics } = require("../providers/diagnosticsProvider")
 const { selectedDevice, spinCompileButton } = require("../init");
 
 async function compileProject() {
@@ -64,9 +65,8 @@ async function compileProject() {
     } catch (_) {
         await vscode.workspace.fs.createDirectory(vscode.Uri.file(path.join(thisWorkspace().uri.fsPath, anInnerDir(), "Debug")));
     }
-    const buildCmd = `"${path.join(toolchainDir(), "bin", currentExtension() === ".c" ? "avr-gcc" : "avr-as")}" ${
-        currentExtension() === ".c" ? `-x c -mmcu=${selectedDevice()} ` : ""
-    } "${vscode.window.activeTextEditor.document.uri.fsPath}"`;
+    const buildCmd = `"${path.join(toolchainDir(), "bin", currentExtension() === ".c" ? "avr-gcc" : "avr-as")}" ${currentExtension() === ".c" ? `-x c -mmcu=${selectedDevice()} ` : ""
+        } "${vscode.window.activeTextEditor.document.uri.fsPath}"`;
     const mainDotO = `${buildCmd} -o "${path.join(thisWorkspace().uri.fsPath, anInnerDir(), "Debug", `main.o`)}"`;
     const elfCmd = `${buildCmd} -o "${path.join(thisWorkspace().uri.fsPath, anInnerDir(), "Debug", `${thisWorkspace().name}.elf`)}"`;
     const hexCmd = `"${path.join(toolchainDir(), "bin", "avr-objcopy")}" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "${path.join(
@@ -77,22 +77,16 @@ async function compileProject() {
     )}" "${path.join(thisWorkspace().uri.fsPath, anInnerDir(), "Debug", `${thisWorkspace().name}.hex`)}"`;
 
     spinCompileButton();
-    pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`,{windowsHide:true},(err)=>{
+    pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`, { windowsHide: true }, (err) => {
         if (err) {
-            var msg = err.message.split("\n",2)[1];
-            vscode.window.showErrorMessage("Build Failed:\n" + msg).then(_s=>{
-                var msgsplits = msg.split(":");
-                var line = Number(msgsplits[2]) - 1;
-                var character = msgsplits[3]==='1'? Number(msgsplits[3]) - 1 : Number(msgsplits[3]);
-                var pos = new vscode.Position(line,character);
-                sendCursorTo(pos);
-            });
+            generateDiagnostics(err.message);
+            vscode.window.showErrorMessage("Build Failed. Check Problems tab for more info!");
         } else {
+            clearDiagnostics();
             vscode.window.showInformationMessage("Build Completed");
         }
         spinCompileButton(false);
     });
-    
 }
 
 module.exports = compileProject;

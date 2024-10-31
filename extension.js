@@ -25,7 +25,9 @@ async function activate(context) {
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() {
+    vscode.commands.executeCommand('setContext', 'avr-utils.isAvrC', false);
+}
 
 module.exports = {
     activate,

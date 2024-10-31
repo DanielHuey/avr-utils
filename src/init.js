@@ -31,8 +31,24 @@ async function init(context) {
         }
     });
 
+    showOrHideUI(vscode.window.activeTextEditor);
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+        showOrHideUI(editor);
+    });
+
     initButtons();
     buttonVisibility();
+}
+
+/**
+ * @param {vscode.TextEditor} editor
+ */
+function showOrHideUI(editor) {
+    if (editor && (editor.document.languageId === 'avr-c' || editor.document.languageId === 'asm')) {
+        vscode.commands.executeCommand('setContext', 'avr-utils.isAvrC', true);
+    } else {
+        vscode.commands.executeCommand('setContext', 'avr-utils.isAvrC', false);
+    }
 }
 
 function initButtons() {

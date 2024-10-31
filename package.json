@@ -17,7 +17,8 @@
     ],
     "activationEvents": [
         "onLanguage:avr-c",
-        "onLanguage:asm"
+        "onLanguage:asm",
+        "onStartupFinished"
     ],
     "main": "./extension.js",
     "contributes": {
@@ -28,7 +29,7 @@
             },
             {
                 "command": "avr-utils.makeProject",
-                "title": "AVR Utils: Make Project"
+                "title": "AVR Utils: Create New Project"
             },
             {
                 "command": "avr-utils.compileProject",
@@ -41,7 +42,8 @@
             "editor/title": [
                 {
                     "command": "avr-utils.compileProject",
-                    "group": "navigation"
+                    "group": "navigation",
+                    "when": "avr-utils.isAvrC"
                 }
             ]
         },
