@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: $GITHUB_SHA
+          ref: ${{ github.sha }}
       
       - name: Setup Node.js Version
         uses: actions/setup-node@v3
