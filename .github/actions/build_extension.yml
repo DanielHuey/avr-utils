@@ -35,6 +35,9 @@ jobs:
       - name: Run build script
         run: npm run avr-utils
       
+      - name: Rename application entry file
+        run: sed -i "s#./extension.js#out/main.js#" package.json
+      
       - name: Package Extension
         run: vsce pack
       
