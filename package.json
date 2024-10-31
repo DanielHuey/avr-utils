@@ -52,7 +52,7 @@
         "keybindings": [
             {
                 "command": "avr-utils.compileProject",
-                "key": "F5",
+                "key": "F4",
                 "when": "editorLangId =~ /^(avr-c|asm)$/"
             }
         ],
