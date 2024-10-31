@@ -111,18 +111,12 @@
         "avr-utils": "npm run esbuild-base"
     },
     "devDependencies": {
-        "@types/mocha": "^10.0.2",
         "@types/node": "18.x",
         "@types/vscode": "^1.60.0",
         "@vscode/test-electron": "^2.3.4",
         "@vscode/vsce": "^2.22.0",
         "esbuild": "^0.19.10",
-        "eslint": "^8.50.0",
-        "glob": "^10.3.3",
-        "mocha": "^10.2.0",
-        "typescript": "^5.2.2",
-        "webpack": "^5.89.0",
-        "webpack-cli": "^5.1.4"
+        "eslint": "^8.50.0"
     },
     "dependencies": {
         "decompress": "^4.2.1",
