@@ -41,7 +41,7 @@ jobs:
         run: sed -i "s#./extension.js#out/main.js#" package.json
       
       - name: Package Extension
-        run: vsce pack
+        run: node_modules/@vscode/vsce/vsce pack
       
       - name: Save artifact
         uses: actions/upload-artifact@v3
