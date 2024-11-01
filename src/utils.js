@@ -52,14 +52,19 @@ async function changeWorkspace() {
  * @param {Object} saveObject
  */
 function dataObject(saveObject = null) {
+    const pathToDataFile = path.join(__dirname, "storage", "data.json");
     if (saveObject) {
-        const oldObject = dataObject();
+        let oldObject = {};
+        try {
+            fs.statSync(pathToDataFile);
+            oldObject = dataObject();
+        } catch {}
         let newObject = {...oldObject, ...saveObject};
-        fs.writeFileSync(path.join(__dirname, "storage", "data.json"), JSON.stringify(newObject), "utf-8");
+        fs.writeFileSync(pathToDataFile, JSON.stringify(newObject), "utf-8");
         return;
     }
     try {
-        return JSON.parse(fs.readFileSync(path.join(__dirname, "storage", "data.json"), "utf8"));
+        return JSON.parse(fs.readFileSync(pathToDataFile, "utf8"));
     } catch {
         let temp = {toolchain_directory: `${path.join(homedir(), "Documents")}`};
         dataObject(temp);

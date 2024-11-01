@@ -15,19 +15,19 @@ const selectDeviceButton = vscode.window.createStatusBarItem(vscode.StatusBarAli
  *
  * @param {vscode.ExtensionContext} context
  */
-async function init(context) {
+function init(context) {
     vscode.commands.registerCommand("avr-utils.selectDevice", selectDevice);
 
-    getWorkspaceRelatedStuff(context);
+    setupWorkspaceProperties(context);
     vscode.workspace.onDidChangeWorkspaceFolders((event) => {
         if (event.removed.length > 0) {
             workspaceNotYetAccessible = true;
             context.subscriptions.pop();
             context.subscriptions.pop();
-            if (vscode.workspace.workspaceFolders) getWorkspaceRelatedStuff(context);
+            if (vscode.workspace.workspaceFolders) setupWorkspaceProperties(context);
         }
         if (event.added.length > 0) {
-            getWorkspaceRelatedStuff(context);
+            setupWorkspaceProperties(context);
         }
     });
 
@@ -37,7 +37,6 @@ async function init(context) {
     });
 
     initButtons();
-    buttonVisibility();
 }
 
 /**
@@ -46,8 +45,10 @@ async function init(context) {
 function showOrHideUI(editor) {
     if (editor && (editor.document.languageId === 'avr-c' || editor.document.languageId === 'asm')) {
         vscode.commands.executeCommand('setContext', 'avr-utils.isAvrC', true);
+        toggleButtons();
     } else {
         vscode.commands.executeCommand('setContext', 'avr-utils.isAvrC', false);
+        toggleButtons(true);
     }
 }
 
@@ -66,26 +67,6 @@ function initButtons() {
         selectDeviceButton.text = "Select AVR Device";
     }
     selectDeviceButton.command = "avr-utils.selectDevice";
-}
-
-async function buttonVisibility() {
-    while (true) {
-        await new Promise((r) => {
-            setTimeout(r, 500);
-        });
-        try {
-            if (vscode.window.activeTextEditor) {
-                if (vscode.window.activeTextEditor.document.languageId !== "avr-c" && vscode.window.activeTextEditor.document.languageId !== "asm") {
-                    toggleButtons(true);
-                } else {
-                    toggleButtons();
-                }
-            } else {
-                toggleButtons(true);
-            }
-        } finally {
-        }
-    }
 }
 
 function toggleButtons(hide = false) {
@@ -140,7 +121,7 @@ let workspaceNotYetAccessible = true;
 /**
  * @param {vscode.ExtensionContext} context
  */
-async function getWorkspaceRelatedStuff(context) {
+async function setupWorkspaceProperties(context) {
     if (workspaceNotYetAccessible) {
         if (vscode.workspace.workspaceFolders) {
             initWorkspace(); // enables the "workspace" utils

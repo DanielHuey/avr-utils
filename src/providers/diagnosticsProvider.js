@@ -97,4 +97,5 @@ function clearDiagnostics() {
 module.exports = {
     generateDiagnostics,
     clearDiagnostics,
+    diagnosticsCollection: globalDiagnostics,
 }

@@ -2,7 +2,7 @@
     "name": "avr-utils",
     "displayName": "AVR Utils",
     "description": "This extension will help you to compile code for avr based microcontrollers straight from the comfort of your favourite code editor!",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "repository": {
         "url": "https://github.com/DanielHuey/avr-utils.git",
         "type": "git"
@@ -18,7 +18,6 @@
     "activationEvents": [
         "onLanguage:avr-c",
         "onLanguage:asm",
-        "onStartupFinished",
         "onCommand:avr-utils.makeProject",
         "onCommand:avr-utils.openMicrochipStudioProject"
     ],
