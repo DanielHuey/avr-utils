@@ -2,6 +2,10 @@
 
 All notable changes to the "avr-utils" extension will be documented in this file.
 
+### [0.1.5]
+- The previous error had persisted but i have fixed it this time for good!
+- A certain function was making the extension fail to start, but it has been fixed too.
+
 ### [0.1.4]
 - Fix error where commands like "Create New Project" in the command palette claim that they are missing ( Would happen especially on VSCode version < 1.75 ).
 - Added a progress bar when downloading the toolchain, so that you (the user) are aware of the process.

@@ -4,10 +4,12 @@ Welcome to **`avr-utils`**.
 
 This extension helps users to write and compile code for their avr microcontrollers straight from the comfort of their favourite Code editor, **VScode**
 
-## !! New !!
+```yml
+New Features:
 - Progress bar when downloading toolchain.
 - Better error message diagnostics (Big Improvement!)
 - Simplified Commenting of code.
+```
 
 More in [Changelog.md](./CHANGELOG.md)
 
