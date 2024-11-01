@@ -52,7 +52,7 @@ async function changeWorkspace() {
  * @param {Object} saveObject
  */
 function dataObject(saveObject = null) {
-    const pathToDataFile = path.join(__dirname, "storage", "rdata.json");
+    const pathToDataFile = path.join(__dirname, "storage", "data.json");
     if (saveObject) {
         let oldObject = {};
         try {
