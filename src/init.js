@@ -130,7 +130,7 @@ async function setupWorkspaceProperties(context) {
             if (!fs.existsSync(pathtovscode)) {
                 fs.mkdirSync(pathtovscode);
             }
-            // context.subscriptions.push(createLinkProvider(/#(\s*?)include "(.*)"/, thisWorkspace().uri.fsPath));
+            context.subscriptions.push(createLinkProvider(/#(\s*?)include "(.*)"/, thisWorkspace().uri.fsPath));
             context.subscriptions.push(registerCompletions({ directory: thisWorkspace().uri.fsPath, triggers: ['"'], regex: /#include\s+"([^"]*)$/, end: "" }));
             if (fs.existsSync(path.join(pathtovscode, "avr_project.json"))) {
                 let thejson = JSON.parse(fs.readFileSync(path.join(pathtovscode, "avr_project.json"), "utf8"));
