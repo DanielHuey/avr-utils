@@ -13,7 +13,6 @@ const {
     toolchainDir,
     dataObject,
     currentExtension,
-    sendCursorTo,
 } = require("../utils");
 const { resetIncludeDir } = require("../providers/documentLinkProvider");
 const { generateDiagnostics, clearDiagnostics } = require("../providers/diagnosticsProvider")

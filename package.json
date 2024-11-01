@@ -18,7 +18,6 @@
     "activationEvents": [
         "onLanguage:avr-c",
         "onLanguage:asm",
-        "onStartupFinished",
         "onCommand:avr-utils.makeProject",
         "onCommand:avr-utils.openMicrochipStudioProject"
     ],
