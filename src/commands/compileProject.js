@@ -79,7 +79,7 @@ async function compileProject() {
     pro.exec(`${mainDotO} && ${elfCmd} && ${hexCmd}`, { windowsHide: true }, (err) => {
         if (err) {
             generateDiagnostics(err.message);
-            vscode.window.showErrorMessage("Build Failed. Check Problems tab for more info!");
+            vscode.window.showErrorMessage("Build Failed. Check Problems tab for possible info!");
         } else {
             clearDiagnostics();
             vscode.window.showInformationMessage("Build Completed");

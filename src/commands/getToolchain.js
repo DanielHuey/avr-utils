@@ -56,9 +56,9 @@ async function getToolchain(platform, downloadsUrl, toolchainSources) {
             
                         let directory = null; // Will represent the directory that the user chooses to store the toolchain in
                         let chooseOwnDir = await vscode.window.showInformationMessage(
-                            'Would you like to save the toolchain to another folder?',
+                            'Would you like to save the toolchain to the Documents folder?',
                             "Change Folder",
-                            "No, Save to ~/Documents/AVR Utils"
+                            "Yes, Save to ~/Documents/AVR Utils"
                         );
                         if (chooseOwnDir === "Change Folder") {
                             directory = await vscode.window.showOpenDialog({
